@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: visitor_postgres
+    environment:
+      POSTGRES_USER: visitor_user
+      POSTGRES_PASSWORD: visitor_password
+      POSTGRES_DB: visitor_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  maildev:
+    image: maildev/maildev:latest
+    container_name: visitor_maildev
+    ports:
+      - "1085:80"      # Web UI
+      - "1025:25"      # SMTP Port
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
